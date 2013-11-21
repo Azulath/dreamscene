@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.graphics.Color;
 
 public class Dreamscene extends Activity implements SensorEventListener
 {
@@ -59,9 +60,13 @@ public class Dreamscene extends Activity implements SensorEventListener
         //if sensor is unreliable, return void
         if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
         {
-            unreliable = true;
             warning.setText("Unreliable");
-            warning.setTextColor(0x00ff00);
+            warning.setTextColor(Color.RED);
+        }
+        else
+        {
+            warning.setText("Reliable");
+            warning.setTextColor(Color.GREEN);
         }
         float xSensor = event.values[2];
         float ySensor = event.values[1];
@@ -73,9 +78,8 @@ public class Dreamscene extends Activity implements SensorEventListener
                 "Orientation Z (Yaw): "+ Float.toString(zSensor) +"\n" +
                 "Timestamp: " + (timestamp)
         );
-        // Add Tag to warn user...
-        if (unreliable) tv.append("\nUnreliable");
 
+        // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
         if (xSensor > 8 || ySensor > 8 || zSensor > 8)
         {
             sensorCoordinates.addCoordinates(xSensor, ySensor, zSensor, timestamp);
