@@ -10,12 +10,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.graphics.Color;
 
+import static java.lang.Math.abs;
+
 public class Dreamscene extends Activity implements SensorEventListener
 {
     private TextView tv;
-    private TextView warning;
     private SensorManager sManager;
-    private  SensorCoordinates sensorCoordinates = new SensorCoordinates();
+    private  SensorCoordinates sensorCoordinates = new SensorCoordinates(2000);
     private long startTime = System.currentTimeMillis();
 
     /** Called when the activity is first created. */
@@ -43,7 +44,7 @@ public class Dreamscene extends Activity implements SensorEventListener
     //When this Activity isn't visible anymore
     @Override
     protected void onStop() {
-        //unregister the sensor listener
+        //un register the sensor listener
         sManager.unregisterListener(this);
         super.onStop();
     }
@@ -55,7 +56,7 @@ public class Dreamscene extends Activity implements SensorEventListener
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // Formel: Sekunden = 1000ns * 1000us * 1000ms
+        // Formula: Seconds = 1000ns * 1000us * 1000ms
         long timestamp = ((event.timestamp)/1000000 - startTime) / 1000;
         //if sensor is unreliable, return void
         if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
@@ -74,7 +75,7 @@ public class Dreamscene extends Activity implements SensorEventListener
         );
 
         // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
-        if (xSensor > 0.8 || ySensor > 0.8 || zSensor > 0.8)
+        if (abs(xSensor) > 0.8 || abs(ySensor) > 0.8 || abs(zSensor) > 0.8)
         {
             sensorCoordinates.addCoordinates(xSensor, ySensor, zSensor, timestamp);
         }

@@ -17,13 +17,15 @@ public class SensorCoordinates
     private float[] zTmp;
     private long[] tTmp;
     private int iterator;
+    private int arraySize;
 
-    public SensorCoordinates()
+    public SensorCoordinates(int size)
     {
-        xTmp = new float[2000];
-        yTmp = new float[2000];
-        zTmp = new float[2000];
-        tTmp = new long[2000];
+        arraySize = size;
+        xTmp = new float[arraySize];
+        yTmp = new float[arraySize];
+        zTmp = new float[arraySize];
+        tTmp = new long[arraySize];
         iterator = 0;
     }
 
@@ -34,7 +36,7 @@ public class SensorCoordinates
         zTmp[iterator] = z;
         tTmp[iterator] = t;
 
-        if (iterator > 1900)
+        if (iterator+1 == arraySize)
         {
             mergeCoordinates();
         }
