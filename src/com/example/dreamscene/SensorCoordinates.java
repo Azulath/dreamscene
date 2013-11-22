@@ -60,6 +60,7 @@ public class SensorCoordinates
         tAvg /= iterator;
 
         addToList(xAvg, yAvg, zAvg, tAvg);
+        iterator = 0;
     }
 
     private void addToList(float x, float y, float z, long t)
