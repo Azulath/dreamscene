@@ -16,6 +16,7 @@ public class Dreamscene extends Activity implements SensorEventListener
     private TextView warning;
     private SensorManager sManager;
     private  SensorCoordinates sensorCoordinates = new SensorCoordinates();
+    private long startTime = System.currentTimeMillis();
 
     /** Called when the activity is first created. */
     @Override
@@ -25,7 +26,6 @@ public class Dreamscene extends Activity implements SensorEventListener
 
         //get the TextView from the layout file
         tv = (TextView) findViewById(R.id.tv);
-        warning = (TextView) findViewById(R.id.textWarning);
         //get a hook to the sensor service
         sManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
@@ -55,18 +55,12 @@ public class Dreamscene extends Activity implements SensorEventListener
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        long timestamp = (event.timestamp)/1000000;
-        boolean unreliable = false;
+        // Formel: Sekunden = 1000ns * 1000us * 1000ms
+        long timestamp = ((event.timestamp)/1000000 - startTime) / 1000;
         //if sensor is unreliable, return void
         if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
         {
-            warning.setText("Unreliable");
-            warning.setTextColor(Color.RED);
-        }
-        else
-        {
-            warning.setText("Reliable");
-            warning.setTextColor(Color.GREEN);
+            tv.setTextColor(Color.RED);
         }
         float xSensor = event.values[2];
         float ySensor = event.values[1];
@@ -76,11 +70,11 @@ public class Dreamscene extends Activity implements SensorEventListener
                 "Orientation X (Roll): "+ Float.toString(xSensor) +"\n"+
                 "Orientation Y (Pitch): "+ Float.toString(ySensor) +"\n"+
                 "Orientation Z (Yaw): "+ Float.toString(zSensor) +"\n" +
-                "Timestamp: " + (timestamp)
+                "Timestamp: " + (timestamp) + "s"
         );
 
         // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
-        if (xSensor > 8 || ySensor > 8 || zSensor > 8)
+        if (xSensor > 0.8 || ySensor > 0.8 || zSensor > 0.8)
         {
             sensorCoordinates.addCoordinates(xSensor, ySensor, zSensor, timestamp);
         }
