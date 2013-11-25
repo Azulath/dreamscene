@@ -1,5 +1,8 @@
 package com.example.dreamscene;
 
+import android.os.Environment;
+
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,10 +11,10 @@ import java.util.List;
  */
 public class SensorCoordinates
 {
-    private List<Float> xData = new LinkedList<Float>();
-    private List<Float> yData = new LinkedList<Float>();
-    private List<Float> zData = new LinkedList<Float>();
-    private List<Long> timestamp = new LinkedList<Long>();
+    public LinkedList<Float> xData = new LinkedList<Float>();
+    private LinkedList<Float> yData = new LinkedList<Float>();
+    private LinkedList<Float> zData = new LinkedList<Float>();
+    private LinkedList<Long> timestamp = new LinkedList<Long>();
     private float[] xTmp;
     private float[] yTmp;
     private float[] zTmp;
@@ -36,10 +39,12 @@ public class SensorCoordinates
         zTmp[iterator] = z;
         tTmp[iterator] = t;
 
-        if (iterator+1 == arraySize)
+        if (iterator + 1 == arraySize)
         {
             mergeCoordinates();
         }
+
+        iterator++;
     }
 
     private void mergeCoordinates()
@@ -48,7 +53,7 @@ public class SensorCoordinates
         float yAvg = 0;
         float zAvg = 0;
         long tAvg = 0;
-        for (int i = 0; i <= iterator; i++)
+        for (int i = 0; i < arraySize; i++)
         {
             xAvg += xTmp[i];
             yAvg += yTmp[i];
@@ -56,10 +61,10 @@ public class SensorCoordinates
             tAvg += tTmp[i];
         }
 
-        xAvg /= iterator;
-        yAvg /= iterator;
-        zAvg /= iterator;
-        tAvg /= iterator;
+        xAvg /= arraySize;
+        yAvg /= arraySize;
+        zAvg /= arraySize;
+        tAvg /= arraySize;
 
         addToList(xAvg, yAvg, zAvg, tAvg);
         iterator = 0;
@@ -71,5 +76,38 @@ public class SensorCoordinates
         yData.add(y);
         zData.add(z);
         timestamp.add(t);
+    }
+
+    public void printToFile()
+    {
+
+        File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(root, "dreamscene.txt");
+
+        try
+        {
+            FileOutputStream f = new FileOutputStream(file);
+            PrintWriter pw = new PrintWriter(f);
+
+            while (!xData.isEmpty())
+            {
+                pw.println("XData: " + xData.pollFirst());
+                pw.println("YData: " + yData.pollFirst());
+                pw.println("ZData: " + zData.pollFirst());
+                pw.println("TimeStamp: " + timestamp.pollFirst());
+                pw.println();
+                pw.println();
+            }
+
+            pw.flush();
+            pw.close();
+            f.close();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
