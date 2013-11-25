@@ -96,7 +96,6 @@ public class SensorCoordinates
                 pw.println("ZData: " + zData.pollFirst());
                 pw.println("TimeStamp: " + timestamp.pollFirst());
                 pw.println();
-                pw.println();
             }
 
             pw.flush();
