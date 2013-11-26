@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class SensorCoordinates
 {
-    public LinkedList<Float> xData = new LinkedList<Float>();
+    private LinkedList<Float> xData = new LinkedList<Float>();
     private LinkedList<Float> yData = new LinkedList<Float>();
     private LinkedList<Float> zData = new LinkedList<Float>();
     private LinkedList<Long> timestamp = new LinkedList<Long>();
@@ -81,8 +81,8 @@ public class SensorCoordinates
     public void printToFile()
     {
 
-        File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File file = new File(root, "dreamscene.txt");
+        File down = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(down, "dreamscene.txt");
 
         try
         {

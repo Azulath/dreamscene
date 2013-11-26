@@ -48,7 +48,8 @@ public class Dreamscene extends Activity implements SensorEventListener
         /*register the sensor listener to listen to the gyroscope sensor, use the
 		 * callbacks defined in this class, and gather the sensor information as
 		 * quick as possible*/
-        sManager.registerListener(this, sManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_FASTEST);
+        sManager.registerListener(this, sManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
+                SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     //When this Activity isn't visible anymore
@@ -88,11 +89,11 @@ public class Dreamscene extends Activity implements SensorEventListener
         );
 
         // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
+        // abs(x) da ja sonst nur positive Werte vorkommen...
         if (abs(xSensor) > 0.1 || abs(ySensor) > 0.1 || abs(zSensor) > 0.1)
         {
             sensorCoordinates.addCoordinates(xSensor, ySensor, zSensor, timestamp);
         }
-
     }
 
     public void saveToFile(View view)
