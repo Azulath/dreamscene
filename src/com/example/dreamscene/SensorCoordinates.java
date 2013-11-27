@@ -4,14 +4,13 @@ import android.os.Environment;
 
 import java.io.*;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Crash with normal List!
  */
 public class SensorCoordinates
 {
-    private LinkedList<Coordinates> coordinateses = new LinkedList<Coordinates>();
+    private LinkedList<Coordinates> coordinates = new LinkedList<Coordinates>();
     private float[] xTmp;
     private float[] yTmp;
     private float[] zTmp;
@@ -69,7 +68,7 @@ public class SensorCoordinates
 
     private void addToList(float x, float y, float z, long t)
     {
-        coordinateses.add(new Coordinates(x, y, z, t));
+        coordinates.add(new Coordinates(x, y, z, t));
     }
 
     public void printToFile()
@@ -83,12 +82,13 @@ public class SensorCoordinates
             FileOutputStream f = new FileOutputStream(file);
             PrintWriter pw = new PrintWriter(f);
 
-            while (!coordinateses.isEmpty())
+            while (!coordinates.isEmpty())
             {
-                pw.println("XData: " + coordinateses.pollFirst().getX());
-                pw.println("YData: " + coordinateses.pollFirst().getY());
-                pw.println("ZData: " + coordinateses.pollFirst().getZ());
-                pw.println("TimeStamp: " + coordinateses.pollFirst().getTime());
+                Coordinates elem = coordinates.pollFirst();
+                pw.println("XData: " + elem.getX());
+                pw.println("YData: " + elem.getY());
+                pw.println("ZData: " + elem.getZ());
+                pw.println("TimeStamp: " + elem.getTime());
                 pw.println();
             }
 
@@ -102,5 +102,18 @@ public class SensorCoordinates
         {
             e.printStackTrace();
         }
+    }
+
+/*    public void upload()
+    {
+        while (!coordinates.isEmpty())
+        {
+
+        }
+    }*/
+
+    public LinkedList<Coordinates> getCoordinates()
+    {
+        return coordinates;
     }
 }

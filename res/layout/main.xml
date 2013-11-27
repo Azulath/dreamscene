@@ -30,8 +30,19 @@
             android:layout_above="@+id/button1"
             android:layout_alignLeft="@+id/button1"
             android:layout_alignParentLeft="true"
-            android:layout_marginBottom="46dp"
+            android:layout_marginBottom="10dp"
             android:text="Save"
             android:onClick="saveToFile" />
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload"
+            android:onClick="uploadData"
+            android:id="@+id/button"
+            android:singleLine="true"
+            android:layout_alignLeft="@+id/button2"
+            android:layout_above="@+id/button2"
+            android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>

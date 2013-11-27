@@ -17,6 +17,7 @@ import android.graphics.Color;
 
 import java.io.*;
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
 
@@ -99,6 +100,29 @@ public class Dreamscene extends Activity implements SensorEventListener
         }
     }
 
+    //TODO: optimize -> SensorCoordinates.upload()
+    public void uploadData(View view)
+    {
+/*        try
+        {
+        LinkedList<Coordinates> co = sensorCoordinates.getCoordinates();
+        Coordinates tmp;
+        SyncTask t = new SyncTask();
+        String result;
+
+        while (!co.isEmpty())
+        {
+            tmp = co.pollFirst();
+            result = t.execute(tmp).get(5, TimeUnit.SECONDS);
+        }
+        }
+        catch (Exception e)
+        {
+            displayEx
+        }*/
+        return;
+    }
+
     public void saveToFile(View view)
     {
         sensorCoordinates.printToFile();
@@ -121,7 +145,7 @@ public class Dreamscene extends Activity implements SensorEventListener
                 Build.USER.length()%10; // 13 digits
     }
 
-    class SyncTask extends AsyncTask<Object, Void, String>
+    public class SyncTask extends AsyncTask<Object, Void, String>
     {
         private ProgressDialog dialog = new ProgressDialog(Dreamscene.this);
 
