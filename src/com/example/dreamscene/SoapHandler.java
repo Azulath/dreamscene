@@ -22,11 +22,25 @@ public class SoapHandler
         return  CallService("HelloWorld", true).toString();
     }
 
-    private Object CallService(String MethtodName, boolean Simple, BasicNameValuePair... params) throws Exception
+    public String UploadSensorData(String DeviceIdentification, long TimeStamp, float x, float y, float z) throws Exception
     {
-        final String SOAP_ACTION = "http://tempuri.org" + MethtodName;
+        String result = CallService("UploadSensorData", true,
+                new BasicNameValuePair("AuthKey", "0be0c768732bf998b2d66579aa1f5ad10101012163cc398aec31bf419f66a918"),
+                new BasicNameValuePair("DeviceIdentification", DeviceIdentification),
+                new BasicNameValuePair("TimeStamp", Long.toString(TimeStamp)),
+                new BasicNameValuePair("MoveX", Float.toString(x)),
+                new BasicNameValuePair("MoveY", Float.toString(y)),
+                new BasicNameValuePair("MoveZ", Float.toString(z))
+        ).toString();
 
-        SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, MethtodName);
+        return result;
+    }
+
+    private Object CallService(String MethodName, boolean Simple, BasicNameValuePair... params) throws Exception
+    {
+        final String SOAP_ACTION = "http://tempuri.org" + MethodName;
+
+        SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, MethodName);
 
         for (BasicNameValuePair pair : params)
         {

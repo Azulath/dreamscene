@@ -11,10 +11,7 @@ import java.util.List;
  */
 public class SensorCoordinates
 {
-    private LinkedList<Float> xData = new LinkedList<Float>();
-    private LinkedList<Float> yData = new LinkedList<Float>();
-    private LinkedList<Float> zData = new LinkedList<Float>();
-    private LinkedList<Long> timestamp = new LinkedList<Long>();
+    private LinkedList<Coordinates> coordinateses = new LinkedList<Coordinates>();
     private float[] xTmp;
     private float[] yTmp;
     private float[] zTmp;
@@ -72,10 +69,7 @@ public class SensorCoordinates
 
     private void addToList(float x, float y, float z, long t)
     {
-        xData.add(x);
-        yData.add(y);
-        zData.add(z);
-        timestamp.add(t);
+        coordinateses.add(new Coordinates(x, y, z, t));
     }
 
     public void printToFile()
@@ -89,12 +83,12 @@ public class SensorCoordinates
             FileOutputStream f = new FileOutputStream(file);
             PrintWriter pw = new PrintWriter(f);
 
-            while (!xData.isEmpty())
+            while (!coordinateses.isEmpty())
             {
-                pw.println("XData: " + xData.pollFirst());
-                pw.println("YData: " + yData.pollFirst());
-                pw.println("ZData: " + zData.pollFirst());
-                pw.println("TimeStamp: " + timestamp.pollFirst());
+                pw.println("XData: " + coordinateses.pollFirst().getX());
+                pw.println("YData: " + coordinateses.pollFirst().getY());
+                pw.println("ZData: " + coordinateses.pollFirst().getZ());
+                pw.println("TimeStamp: " + coordinateses.pollFirst().getTime());
                 pw.println();
             }
 

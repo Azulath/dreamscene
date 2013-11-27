@@ -1,11 +1,14 @@
 package com.example.dreamscene;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -104,5 +107,64 @@ public class Dreamscene extends Activity implements SensorEventListener
     public void terminate(View view)
     {
         moveTaskToBack(true);
+    }
+
+    private String DeviceID()
+    {
+        return "35" +
+                Build.BOARD.length()%10 + Build.BRAND.length()%10 +
+                Build.CPU_ABI.length()%10 + Build.DEVICE.length()%10 +
+                Build.DISPLAY.length()%10 + Build.HOST.length()%10 +
+                Build.ID.length()%10 + Build.MANUFACTURER.length()%10 +
+                Build.MODEL.length()%10 + Build.PRODUCT.length()%10 +
+                Build.TAGS.length()%10 + Build.TYPE.length()%10 +
+                Build.USER.length()%10; // 13 digits
+    }
+
+    class SyncTask extends AsyncTask<Object, Void, String>
+    {
+        private ProgressDialog dialog = new ProgressDialog(Dreamscene.this);
+
+        protected void onPreExecute()
+        {
+            dialog.setMessage("Uploading...");
+            dialog.show();
+        }
+
+        protected  String doInBackground(Object... params)
+        {
+            SoapHandler sh;
+            Coordinates coordinates;
+
+            try
+            {
+                coordinates = (Coordinates) params[0];
+                String url = "http://rmu.cc/DsWeb/WebService/WebService.asmx";
+                sh = new SoapHandler(url);
+            }
+            catch (Exception e)
+            {
+                return  e.getMessage();
+            }
+
+            String result;
+
+            try
+            {
+                String id = DeviceID();
+                result = sh.UploadSensorData(id, coordinates.getTime(),
+                        coordinates.getX(), coordinates.getY(), coordinates.getZ());
+            }
+            catch (Exception e)
+            {
+                result = e.toString();
+            }
+            return result;
+        }
+
+        protected void onPosExecute(String result)
+        {
+            if (dialog.isShowing()) dialog.dismiss();
+        }
     }
 }
