@@ -73,6 +73,7 @@ public class SensorCoordinates
 
         addToList(xAvg, yAvg, zAvg, tAvg);
         iterator = 0;
+        ds.increaseCount();
     }
 
     private void addToList(float x, float y, float z, long t)

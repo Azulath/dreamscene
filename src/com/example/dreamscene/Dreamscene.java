@@ -27,6 +27,7 @@ public class Dreamscene extends Activity implements SensorEventListener
     private SensorManager sManager;
     private SensorCoordinates sensorCoordinates = new SensorCoordinates(this, 100, DeviceID());
     private long startUpTime = System.currentTimeMillis();
+    private int count = 0;
 
     /**
      * Called when the activity is first created.
@@ -50,7 +51,7 @@ public class Dreamscene extends Activity implements SensorEventListener
     {
         super.onResume();
         /*register the sensor listener to listen to the gyroscope sensor, use the
-		 * callbacks defined in this class, and gather the sensor information as
+         * callbacks defined in this class, and gather the sensor information as
 		 * quick as possible*/
         sManager.registerListener(this, sManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
                 SensorManager.SENSOR_DELAY_FASTEST);
@@ -75,24 +76,28 @@ public class Dreamscene extends Activity implements SensorEventListener
     public void onSensorChanged(SensorEvent event)
     {
         long timestamp = System.currentTimeMillis();
-
-        long tRunning = (((event.timestamp)/1000000) - startUpTime)/1000;
+        long tRunning = (((event.timestamp) / 1000000) - startUpTime) / 1000;
 
         //if sensor is unreliable, return void
         if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
         {
             tv.setTextColor(Color.RED);
+        } else
+        {
+            tv.setTextColor(Color.GREEN);
         }
+
         float xSensor = event.values[2];
         float ySensor = event.values[1];
         float zSensor = event.values[0];
         //else it will output the Roll, Pitch and Yawn values
         tv.setText(
-                "Orientation X (Roll): " + Float.toString(xSensor) + "\n" +
-                        "Orientation Y (Pitch): " + Float.toString(ySensor) + "\n" +
-                        "Orientation Z (Yaw): " + Float.toString(zSensor) + "\n" +
+                "Orientation X: " + Float.toString(xSensor) + "\n" +
+                        "Orientation Y: " + Float.toString(ySensor) + "\n" +
+                        "Orientation Z: " + Float.toString(zSensor) + "\n" +
                         "Timestamp: " + tRunning + "s\n" +
-                        "Device ID: " + DeviceID()
+                        "Device ID: " + DeviceID() +
+                        "Object Count: " + count + "\n"
         );
 
         // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
@@ -122,12 +127,17 @@ public class Dreamscene extends Activity implements SensorEventListener
     private String DeviceID()
     {
         return "35" +
-                Build.BOARD.length()%10 + Build.BRAND.length()%10 +
-                Build.CPU_ABI.length()%10 + Build.DEVICE.length()%10 +
-                Build.DISPLAY.length()%10 + Build.HOST.length()%10 +
-                Build.ID.length()%10 + Build.MANUFACTURER.length()%10 +
-                Build.MODEL.length()%10 + Build.PRODUCT.length()%10 +
-                Build.TAGS.length()%10 + Build.TYPE.length()%10 +
-                Build.USER.length()%10; // 13 digits
+                Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
+                Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 +
+                Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 +
+                Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 +
+                Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 +
+                Build.TAGS.length() % 10 + Build.TYPE.length() % 10 +
+                Build.USER.length() % 10; // 13 digits
+    }
+
+    public void increaseCount()
+    {
+        count++;
     }
 }

@@ -7,7 +7,7 @@ public class Coordinates
     private float z;
     private long time;
 
-    public  Coordinates(float x, float y, float z, long t)
+    public Coordinates(float x, float y, float z, long t)
     {
         this.x = x;
         this.y = y;
