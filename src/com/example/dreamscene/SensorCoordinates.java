@@ -23,8 +23,9 @@ public class SensorCoordinates
     private int iterator;
     private int arraySize;
     private String deviceID;
+    private Dreamscene ds;
 
-    public SensorCoordinates(int size, String id)
+    public SensorCoordinates(Dreamscene ds, int size, String id)
     {
         arraySize = size;
         xTmp = new float[arraySize];
@@ -33,6 +34,7 @@ public class SensorCoordinates
         tTmp = new long[arraySize];
         iterator = 0;
         deviceID = id;
+        this.ds = ds;
     }
 
     public void addCoordinates(float x, float y, float z, long t)
@@ -110,7 +112,7 @@ public class SensorCoordinates
         }
     }
 
-    public void upload(Dreamscene ds)
+    public void upload()
     {
         try
         {
@@ -128,7 +130,14 @@ public class SensorCoordinates
             }
         } catch (Exception e)
         {
-            e.printStackTrace();
+            displayException(e, "upload data");
         }
+    }
+
+    public void displayException(Exception e, String whileAction)
+    {
+        new AlertDialog.Builder(ds).setTitle("EXCEPTION while '" + whileAction + "'").setMessage(
+                "Type: " + e.getClass().toString() + "\r\n" + e.getMessage()
+        ).show();
     }
 }

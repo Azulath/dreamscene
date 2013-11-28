@@ -25,7 +25,8 @@ public class Dreamscene extends Activity implements SensorEventListener
 {
     private TextView tv;
     private SensorManager sManager;
-    private SensorCoordinates sensorCoordinates = new SensorCoordinates(100, DeviceID());
+    private SensorCoordinates sensorCoordinates = new SensorCoordinates(this, 100, DeviceID());
+    private long startUpTime = System.currentTimeMillis();
 
     /**
      * Called when the activity is first created.
@@ -74,6 +75,9 @@ public class Dreamscene extends Activity implements SensorEventListener
     public void onSensorChanged(SensorEvent event)
     {
         long timestamp = System.currentTimeMillis();
+
+        long tRunning = (((event.timestamp)/1000000) - startUpTime)/1000;
+
         //if sensor is unreliable, return void
         if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
         {
@@ -87,7 +91,7 @@ public class Dreamscene extends Activity implements SensorEventListener
                 "Orientation X (Roll): " + Float.toString(xSensor) + "\n" +
                         "Orientation Y (Pitch): " + Float.toString(ySensor) + "\n" +
                         "Orientation Z (Yaw): " + Float.toString(zSensor) + "\n" +
-                        "Timestamp: " + (timestamp/1000) + "s\n" +
+                        "Timestamp: " + tRunning + "s\n" +
                         "Device ID: " + DeviceID()
         );
 
@@ -102,7 +106,7 @@ public class Dreamscene extends Activity implements SensorEventListener
     //TODO: optimize -> SensorCoordinates.upload()
     public void uploadData(View view)
     {
-        sensorCoordinates.upload(this);
+        sensorCoordinates.upload();
     }
 
     public void saveToFile(View view)
