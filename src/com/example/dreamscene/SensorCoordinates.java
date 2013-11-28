@@ -1,9 +1,14 @@
 package com.example.dreamscene;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 
 import java.io.*;
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Crash with normal List!
@@ -17,8 +22,9 @@ public class SensorCoordinates
     private long[] tTmp;
     private int iterator;
     private int arraySize;
+    private String deviceID;
 
-    public SensorCoordinates(int size)
+    public SensorCoordinates(int size, String id)
     {
         arraySize = size;
         xTmp = new float[arraySize];
@@ -26,6 +32,7 @@ public class SensorCoordinates
         zTmp = new float[arraySize];
         tTmp = new long[arraySize];
         iterator = 0;
+        deviceID = id;
     }
 
     public void addCoordinates(float x, float y, float z, long t)
@@ -104,16 +111,56 @@ public class SensorCoordinates
         }
     }
 
-/*    public void upload()
+    public void upload(Dreamscene ds)
     {
-        while (!coordinates.isEmpty())
+        try
         {
+            for (Coordinates coord : coordinates)
+            {
+                SyncTask t = new SyncTask();
+                String result = t.execute(coord).get(5, TimeUnit.SECONDS);
 
+                if (!result.equals("success"))
+                {
+                    new AlertDialog.Builder(ds).setMessage("UPLOAD FAILED: " + result).show();
+                    return;
+                }
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
         }
-    }*/
+    }
 
-    public LinkedList<Coordinates> getCoordinates()
+    public class SyncTask extends AsyncTask<Object, Void, String>
     {
-        return coordinates;
+        protected String doInBackground(Object... params)
+        {
+            SoapHandler sh;
+            Coordinates coordinates;
+
+            try
+            {
+                coordinates = (Coordinates) params[0];
+                String url = "http://rmu.cc/DsWeb/WebService/WebService.asmx";
+                sh = new SoapHandler(url);
+            } catch (Exception e)
+            {
+                return e.getMessage();
+            }
+
+            String result;
+
+            try
+            {
+                result = sh.UploadSensorData(deviceID, coordinates.getTime(),
+                        coordinates.getX(), coordinates.getY(), coordinates.getZ());
+            } catch (Exception e)
+            {
+                result = e.toString();
+            }
+            return result;
+        }
     }
 }

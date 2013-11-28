@@ -25,8 +25,7 @@ public class Dreamscene extends Activity implements SensorEventListener
 {
     private TextView tv;
     private SensorManager sManager;
-    private SensorCoordinates sensorCoordinates = new SensorCoordinates(5);
-    private long startTime = System.currentTimeMillis();
+    private SensorCoordinates sensorCoordinates = new SensorCoordinates(100, DeviceID());
 
     /**
      * Called when the activity is first created.
@@ -74,8 +73,7 @@ public class Dreamscene extends Activity implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event)
     {
-        // Formula: Seconds = 1000ns * 1000us * 1000ms
-        long timestamp = ((event.timestamp) / 1000000 - startTime);
+        long timestamp = System.currentTimeMillis();
         //if sensor is unreliable, return void
         if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
         {
@@ -89,7 +87,8 @@ public class Dreamscene extends Activity implements SensorEventListener
                 "Orientation X (Roll): " + Float.toString(xSensor) + "\n" +
                         "Orientation Y (Pitch): " + Float.toString(ySensor) + "\n" +
                         "Orientation Z (Yaw): " + Float.toString(zSensor) + "\n" +
-                        "Timestamp: " + (timestamp/1000) + "s"
+                        "Timestamp: " + (timestamp/1000) + "s\n" +
+                        "Device ID: " + DeviceID()
         );
 
         // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
@@ -103,24 +102,7 @@ public class Dreamscene extends Activity implements SensorEventListener
     //TODO: optimize -> SensorCoordinates.upload()
     public void uploadData(View view)
     {
-/*        try
-        {
-        LinkedList<Coordinates> co = sensorCoordinates.getCoordinates();
-        Coordinates tmp;
-        SyncTask t = new SyncTask();
-        String result;
-
-        while (!co.isEmpty())
-        {
-            tmp = co.pollFirst();
-            result = t.execute(tmp).get(5, TimeUnit.SECONDS);
-        }
-        }
-        catch (Exception e)
-        {
-            displayEx
-        }*/
-        return;
+        sensorCoordinates.upload(this);
     }
 
     public void saveToFile(View view)
@@ -143,52 +125,5 @@ public class Dreamscene extends Activity implements SensorEventListener
                 Build.MODEL.length()%10 + Build.PRODUCT.length()%10 +
                 Build.TAGS.length()%10 + Build.TYPE.length()%10 +
                 Build.USER.length()%10; // 13 digits
-    }
-
-    public class SyncTask extends AsyncTask<Object, Void, String>
-    {
-        private ProgressDialog dialog = new ProgressDialog(Dreamscene.this);
-
-        protected void onPreExecute()
-        {
-            dialog.setMessage("Uploading...");
-            dialog.show();
-        }
-
-        protected  String doInBackground(Object... params)
-        {
-            SoapHandler sh;
-            Coordinates coordinates;
-
-            try
-            {
-                coordinates = (Coordinates) params[0];
-                String url = "http://rmu.cc/DsWeb/WebService/WebService.asmx";
-                sh = new SoapHandler(url);
-            }
-            catch (Exception e)
-            {
-                return  e.getMessage();
-            }
-
-            String result;
-
-            try
-            {
-                String id = DeviceID();
-                result = sh.UploadSensorData(id, coordinates.getTime(),
-                        coordinates.getX(), coordinates.getY(), coordinates.getZ());
-            }
-            catch (Exception e)
-            {
-                result = e.toString();
-            }
-            return result;
-        }
-
-        protected void onPosExecute(String result)
-        {
-            if (dialog.isShowing()) dialog.dismiss();
-        }
     }
 }

@@ -9,7 +9,7 @@ import org.ksoap2.transport.HttpTransportSE;
 
 public class SoapHandler
 {
-    public final String WSDL_TARGET_NAMESPACE = "http://tempuri.org";
+    public final String WSDL_TARGET_NAMESPACE = "http://tempuri.org/";
     public String SOAP_ADDRESS; // = "http://rmu.cc/DsWeb/WebService/WebService.asmx";
 
     public SoapHandler(String SoapAddress)
@@ -38,7 +38,7 @@ public class SoapHandler
 
     private Object CallService(String MethodName, boolean Simple, BasicNameValuePair... params) throws Exception
     {
-        final String SOAP_ACTION = "http://tempuri.org" + MethodName;
+        final String SOAP_ACTION = "http://tempuri.org/" + MethodName;
 
         SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, MethodName);
 
