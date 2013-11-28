@@ -93,7 +93,7 @@ public class Dreamscene extends Activity implements SensorEventListener
 
         // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
         // abs(x) da ja sonst nur positive Werte vorkommen...
-        if (abs(xSensor) > 0.1 || abs(ySensor) > 0.1 || abs(zSensor) > 0.1)
+        if (abs(xSensor) > 0.8 || abs(ySensor) > 0.8 || abs(zSensor) > 0.8)
         {
             sensorCoordinates.addCoordinates(xSensor, ySensor, zSensor, timestamp);
         }

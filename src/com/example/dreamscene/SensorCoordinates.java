@@ -89,9 +89,8 @@ public class SensorCoordinates
             FileOutputStream f = new FileOutputStream(file);
             PrintWriter pw = new PrintWriter(f);
 
-            while (!coordinates.isEmpty())
+            for (Coordinates elem : coordinates)
             {
-                Coordinates elem = coordinates.pollFirst();
                 pw.println("XData: " + elem.getX());
                 pw.println("YData: " + elem.getY());
                 pw.println("ZData: " + elem.getZ());
@@ -117,7 +116,7 @@ public class SensorCoordinates
         {
             for (Coordinates coord : coordinates)
             {
-                SyncTask t = new SyncTask();
+                SyncTask t = new SyncTask(ds, deviceID);
                 String result = t.execute(coord).get(5, TimeUnit.SECONDS);
 
                 if (!result.equals("success"))
@@ -130,37 +129,6 @@ public class SensorCoordinates
         } catch (Exception e)
         {
             e.printStackTrace();
-        }
-    }
-
-    public class SyncTask extends AsyncTask<Object, Void, String>
-    {
-        protected String doInBackground(Object... params)
-        {
-            SoapHandler sh;
-            Coordinates coordinates;
-
-            try
-            {
-                coordinates = (Coordinates) params[0];
-                String url = "http://rmu.cc/DsWeb/WebService/WebService.asmx";
-                sh = new SoapHandler(url);
-            } catch (Exception e)
-            {
-                return e.getMessage();
-            }
-
-            String result;
-
-            try
-            {
-                result = sh.UploadSensorData(deviceID, coordinates.getTime(),
-                        coordinates.getX(), coordinates.getY(), coordinates.getZ());
-            } catch (Exception e)
-            {
-                result = e.toString();
-            }
-            return result;
         }
     }
 }
