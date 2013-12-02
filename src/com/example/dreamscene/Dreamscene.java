@@ -25,7 +25,7 @@ public class Dreamscene extends Activity implements SensorEventListener
 {
     private TextView tv;
     private SensorManager sManager;
-    private SensorCoordinates sensorCoordinates = new SensorCoordinates(this, 100, DeviceID());
+    private SensorCoordinates sensorCoordinates = new SensorCoordinates(this, 125, DeviceID());
     private long startUpTime = System.currentTimeMillis();
     private int count = 0;
 
@@ -57,14 +57,14 @@ public class Dreamscene extends Activity implements SensorEventListener
                 SensorManager.SENSOR_DELAY_FASTEST);
     }
 
-    //When this Activity isn't visible anymore
+/*    //When this Activity isn't visible anymore
     @Override
     protected void onStop()
     {
         //un register the sensor listener
         sManager.unregisterListener(this);
         super.onStop();
-    }
+    }*/
 
     @Override
     public void onAccuracyChanged(Sensor arg0, int arg1)
@@ -96,7 +96,7 @@ public class Dreamscene extends Activity implements SensorEventListener
                         "Orientation Y: " + Float.toString(ySensor) + "\n" +
                         "Orientation Z: " + Float.toString(zSensor) + "\n" +
                         "Timestamp: " + tRunning + "s\n" +
-                        "Device ID: " + DeviceID() +
+                        "Device ID: " + DeviceID() + "\n" +
                         "Object Count: " + count + "\n"
         );
 
@@ -121,6 +121,9 @@ public class Dreamscene extends Activity implements SensorEventListener
 
     public void terminate(View view)
     {
+        sManager.unregisterListener(this);
+        super.onStop();
+        sensorCoordinates.clear();
         moveTaskToBack(true);
     }
 

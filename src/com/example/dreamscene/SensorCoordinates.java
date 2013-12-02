@@ -94,11 +94,11 @@ public class SensorCoordinates
 
             for (Coordinates elem : coordinates)
             {
-                pw.println("XData: " + elem.getX());
-                pw.println("YData: " + elem.getY());
-                pw.println("ZData: " + elem.getZ());
+                pw.println("X: " + elem.getX());
+                pw.println("Y: " + elem.getY());
+                pw.println("Z: " + elem.getZ());
                 pw.println("TimeStamp: " + elem.getTime());
-                pw.println();
+                pw.println("\n\r");
             }
 
             pw.flush();
@@ -135,7 +135,14 @@ public class SensorCoordinates
         }
     }
 
-    public void displayException(Exception e, String whileAction)
+    public void clear()
+    {
+        coordinates = null;
+        xTmp = yTmp = zTmp = null;
+        tTmp = null;
+    }
+
+    private void displayException(Exception e, String whileAction)
     {
         new AlertDialog.Builder(ds).setTitle("EXCEPTION while '" + whileAction + "'").setMessage(
                 "Type: " + e.getClass().toString() + "\r\n" + e.getMessage()
