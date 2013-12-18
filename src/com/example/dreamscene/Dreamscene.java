@@ -25,9 +25,10 @@ public class Dreamscene extends Activity implements SensorEventListener
 {
     private TextView tv;
     private SensorManager sManager;
-    private SensorCoordinates sensorCoordinates = new SensorCoordinates(this, 125, DeviceID());
+    private SensorCoordinates sensorCoordinates = new SensorCoordinates(this, 60, DeviceID());
     private long startUpTime = System.currentTimeMillis();
     private int count = 0;
+    private double threshold = 0.2;
 
     /**
      * Called when the activity is first created.
@@ -104,7 +105,7 @@ public class Dreamscene extends Activity implements SensorEventListener
 
         // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
         // abs(x) da ja sonst nur positive Werte vorkommen...
-        if (abs(xSensor) > 0.8 || abs(ySensor) > 0.8 || abs(zSensor) > 0.8)
+        if (abs(xSensor) > threshold || abs(ySensor) > threshold || abs(zSensor) > threshold)
         {
             sensorCoordinates.addCoordinates(xSensor, ySensor, zSensor, timestamp);
         }
