@@ -25,7 +25,7 @@ public class Dreamscene extends Activity implements SensorEventListener
 {
     private TextView tv;
     private SensorManager sManager;
-    private SensorCoordinates sensorCoordinates = new SensorCoordinates(this, 60, DeviceID());
+    private SensorCoordinates sensorCoordinates = new SensorCoordinates(this, 60, DeviceID(), "Alex Nexus 4");
     private long startUpTime = System.currentTimeMillis();
     private int count = 0;
     private double threshold = 0.2;

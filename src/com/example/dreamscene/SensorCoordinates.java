@@ -23,9 +23,10 @@ public class SensorCoordinates
     private int iterator;
     private int arraySize;
     private String deviceID;
+    private String name;
     private Dreamscene ds;
 
-    public SensorCoordinates(Dreamscene ds, int size, String id)
+    public SensorCoordinates(Dreamscene ds, int size, String id, String name)
     {
         arraySize = size;
         xTmp = new float[arraySize];
@@ -35,6 +36,7 @@ public class SensorCoordinates
         iterator = 0;
         deviceID = id;
         this.ds = ds;
+        this.name = name;
     }
 
     public void addCoordinates(float x, float y, float z, long t)
@@ -119,7 +121,7 @@ public class SensorCoordinates
         {
             for (Coordinates coord : coordinates)
             {
-                SyncTask t = new SyncTask(ds, deviceID);
+                SyncTask t = new SyncTask(ds, name);
                 String result = t.execute(coord).get(5, TimeUnit.SECONDS);
 
                 if (!result.equals("success"))
