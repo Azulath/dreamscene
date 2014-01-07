@@ -99,8 +99,8 @@ public class Dreamscene extends Activity implements SensorEventListener
                         "Orientation Y: " + Float.toString(ySensor) + "\n" +
                         "Orientation Z: " + Float.toString(zSensor) + "\n" +
                         "Timestamp: " + tRunning + "s\n" +
-                        "Device ID: " + DeviceID() + "\n" +
-                        "Object Count: " + count + "\n"
+                        //"Device ID: " + DeviceID() + "\n" +
+                        //"Object Count: " + count + "\n"
         );
 
         // Sensor wie ma mog setzn hoit - am Epilepsiehandy is so praktischer
