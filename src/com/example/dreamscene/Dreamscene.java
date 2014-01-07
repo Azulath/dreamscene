@@ -98,7 +98,7 @@ public class Dreamscene extends Activity implements SensorEventListener
                 "Orientation X: " + Float.toString(xSensor) + "\n" +
                         "Orientation Y: " + Float.toString(ySensor) + "\n" +
                         "Orientation Z: " + Float.toString(zSensor) + "\n" +
-                        "Timestamp: " + tRunning + "s\n" +
+                        "Timestamp: " + tRunning + "s\n"
                         //"Device ID: " + DeviceID() + "\n" +
                         //"Object Count: " + count + "\n"
         );
